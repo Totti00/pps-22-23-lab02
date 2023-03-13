@@ -1,5 +1,7 @@
 package u02
 
+import scala.annotation.tailrec
+
 object Lab extends App:
   println("Hello, Scala!")
 
@@ -65,4 +67,31 @@ object Lab extends App:
 
   def composeGen[A, B, C](f: B => C, g: A => B): A => C =  x => f(g(x))
 
-  println(composeGen(x => s"$x Hello World!", y => 5)(12.0))
+
+  println("\nRecursion")
+  @tailrec
+  def gcd(a: Int, b: Int): Int = (a, b) match
+    case (a, b) if a > b && b != 0 => gcd(b, a % b)
+    case _ => a
+
+  println(gcd(12, 8))
+  println(gcd(14, 7))
+
+
+  println("\nSum Type, Product Type, Modules")
+  enum Shape:
+    case Rectangle(weight: Double, height: Double)
+    case Circle(radius: Double)
+    case Square(l: Double)
+
+  object Shape:
+    def perimeter(shape: Shape): Double = shape match
+      case Rectangle(w, h) => (w + h) * 2
+      case Circle(r) => 2 * 3.14 * r
+      case Square(l) => l * l
+
+    def contains(shape: Shape, point: (Double, Double)): Boolean = (shape, point) match
+      case (Rectangle(w, h), (x, y)) => x < w && y < h
+      case (Circle(r), (x, y)) => x < r && y < r
+      case (Square(l), (x, y)) => x < l && y < l
+
